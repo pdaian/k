@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="build" name="KTool Build file">
 
-	<property location="javasources" name="javasources" />
+	<property location="src/javasources" name="javasources" />
 	<property name="version" value="nightly" />
 	<property name="config" value="./tests/config.xml" />
 
@@ -44,8 +44,8 @@
 
 	<target name="clean-java">
 		<delete dir="${javasources}/KTool/bin" />
-		<delete file="${javasources}/../dist/lib/java/k3.jar" />
-		<delete file="${javasources}/../dist/lib/version.txt" />
+		<delete file="${javasources}/../../lib/java/k3.jar" />
+		<delete file="${javasources}/../../lib/version.txt" />
 		<delete dir="./k/" />
 		<delete>
 			<fileset dir="${javasources}/KTool/src/org/kframework/backend/pdmc/pda/buchi/parser" includes="*.java" />
@@ -55,7 +55,7 @@
 	</target>
 
 	<target name="makeversion">
-		<property name="version.file" value="./dist/lib/version.txt" />
+		<property name="version.file" value="./lib/version.txt" />
 
 		<exec executable="git" outputproperty="version.out">
 			<arg value="describe" />
@@ -92,7 +92,16 @@
 		<delete file="k-${version}.tgz" />
 
 		<copy todir="release/k">
-			<fileset dir="dist">
+			<fileset dir=".">
+				<include name="INSTALL" />
+				<include name="LICENSE" />
+				<include name="README" />
+				<include name="bin/**" />
+				<include name="documentation/**" />
+				<include name="include/**" />
+				<include name="lib/**" />
+				<include name="samples/**" />
+				<include name="tutorial/**" />
 				<exclude name="**/.*/**" />
 				<exclude name="examples/**/*-kompiled/**" />
 				<exclude name="tutorial/**/*-kompiled/**" />
@@ -132,7 +141,7 @@
 
 
 	<target name="test" depends="build">
-           <java jar="${javasources}/../dist/lib/java/k3.jar" fork="true" failonerror="true">
+           <java jar="${javasources}/../../lib/java/k3.jar" fork="true" failonerror="true">
 	     <arg value="-ktest"/>
 	     <arg value="${config}"/>
 	     <arg value="-programs"/>
