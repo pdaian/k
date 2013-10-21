@@ -103,7 +103,7 @@
 				<include name="samples/**" />
 				<include name="tutorial/**" />
 				<exclude name="**/.*/**" />
-				<exclude name="examples/**/*-kompiled/**" />
+				<exclude name="samples/**/*-kompiled/**" />
 				<exclude name="tutorial/**/*-kompiled/**" />
 				<exclude name="bin/native/linux/implodePT" />
 				<exclude name="bin/native/macosx/implodePT" />
@@ -117,7 +117,8 @@
 				<include name="k/bin/kast" />
 				<include name="k/bin/kompile" />
 				<include name="k/bin/krun" />
-				<include name="k/bin/ksettest" />
+				<include name="k/bin/kpp" />
+				<include name="k/bin/ktest" />
 				<include name="k/bin/maude/binaries/maude.intelDarwin" />
 				<include name="k/bin/maude/binaries/maude.linux" />
 				<include name="k/bin/maude/binaries/maude.linux64" />
@@ -129,7 +130,8 @@
 				<exclude name="k/bin/kast" />
 				<exclude name="k/bin/kompile" />
 				<exclude name="k/bin/krun" />
-				<exclude name="k/bin/ksettest" />
+				<exclude name="k/bin/kpp" />
+				<exclude name="k/bin/ktest" />
 				<exclude name="k/bin/maude/binaries/maude.intelDarwin" />
 				<exclude name="k/bin/maude/binaries/maude.linux" />
 				<exclude name="k/bin/maude/binaries/maude.linux64" />
