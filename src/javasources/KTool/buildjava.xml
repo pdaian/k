@@ -24,14 +24,14 @@
 			<pathelement location="${javalibs}/diffutils-1.2.1.jar" />
 			<pathelement location="${javalibs}/guava-14.0.1.jar" />
 			<pathelement location="${javalibs}/jansi-1.8.jar" />
-			<pathelement location="${javalibs}/java/jline-1.0.jar" />
+			<pathelement location="${javalibs}/jline-1.0.jar" />
 			<pathelement location="${javalibs}/jopt-simple-3.3.jar" />
 			<pathelement location="${javalibs}/jung-algorithms-2.0.1.jar" />
 			<pathelement location="${javalibs}/jung-api-2.0.1.jar" />
 			<pathelement location="${javalibs}/jung-graph-impl-2.0.1.jar" />
 			<pathelement location="${javalibs}/jung-io-2.0.1.jar" />
 			<pathelement location="${javalibs}/jung-visualization-2.0.1.jar" />
-			<pathelement location="${javalibs}/java/strategoxt.jar" />
+			<pathelement location="${javalibs}/strategoxt.jar" />
 		</path>
 	</path>
 	<target name="init">
