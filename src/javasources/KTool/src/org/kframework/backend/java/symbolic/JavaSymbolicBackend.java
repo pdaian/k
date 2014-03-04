@@ -24,9 +24,11 @@ import org.kframework.main.FirstStep;
 import org.kframework.main.LastStep;
 import org.kframework.utils.BinaryLoader;
 import org.kframework.utils.Stopwatch;
+import org.kframework.utils.file.KPaths;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 
 /**
@@ -52,9 +54,18 @@ public class JavaSymbolicBackend extends BasicBackend {
 
     public static final String DEFINITION_FILENAME = "java_symbolic_definition.bin";
 
+    @Override
+    public Collection<String> getHooks() {
+        return context.getHookedProperties().stringPropertyNames();
+    }
+
     public JavaSymbolicBackend(Stopwatch sw, Context context) {
         super(sw, context);
-    }
+        String separator = System.getProperty("file.separator");
+        String path = KPaths.getKBase(false) + separator + "include" + separator + "java";
+        String fileName = path + separator + "hooks.properties";
+        context.initializeHookedProperties(fileName);
+   }
 
     @Override
     public Definition lastStep(Definition javaDef) {
@@ -76,7 +87,7 @@ public class JavaSymbolicBackend extends BasicBackend {
 
     @Override
     public CompilerSteps<Definition> getCompilationSteps() {
-        CompilerSteps<Definition> steps = new CompilerSteps<Definition>(context);
+        CompilerSteps<Definition> steps = new CompilerSteps<>(context);
         steps.add(new FirstStep(this, context));
 
         steps.add(new CheckVisitorStep<Definition>(new CheckConfigurationCells(context), context));
