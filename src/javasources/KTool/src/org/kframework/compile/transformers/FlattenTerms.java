@@ -15,85 +15,17 @@ import java.util.List;
 import java.util.Set;
 
 
-public class FlattenSyntax extends CopyOnWriteTransformer {
-    Set<String> listSeparators = new HashSet<String>();
-    boolean isComputation = false;
+public class FlattenTerms extends CopyOnWriteTransformer {
+    FlattenKSyntax kTrans;
 
-    public FlattenSyntax(Context context) {
+    public FlattenTerms(Context context) {
         super("Syntax K to Abstract K", context);
-    }
-
-    @Override
-    public ASTNode transform(Definition node) throws TransformerException {
-        //TODO: Remove the preprocessing below once backends updated to use FlattenTerms and prev. steps don't introduce new terms
-        node = (Definition) node.accept(new FlattenTerms(context));
-        return super.transform(node);
+        kTrans = new FlattenKSyntax(this, context);
     }
 
     @Override
     public ASTNode transform(Module node) throws TransformerException {
-        listSeparators.clear();
-        node = (Module) super.transform(node);
-        if (listSeparators.isEmpty())
-            return node;
-
-        // List<PriorityBlock> pbs = new ArrayList<PriorityBlock>();
-        // PriorityBlock pb = new PriorityBlock();
-        // pbs.add(pb);
-        // Syntax syn = new Syntax(new Sort(KSorts.KLABEL), pbs);
-        // node.getItems().add(syn);
-        // for (String separator : listSeparators) {
-        // List<ProductionItem> pis = new ArrayList<ProductionItem>();
-        // pis.add(new Terminal(MetaK.getListUnitLabel(separator)));
-        // pb.getProductions().add(new Production(new Sort(KSorts.KLABEL), pis));
-        // }
-        for (String sep : listSeparators) {
-            node.addConstant(KSorts.KLABEL, MetaK.getListUnitLabel(sep));
-        }
-        return node;
-    }
-
-    @Override
-    public ASTNode transform(Syntax node) throws TransformerException {
-        if (!MetaK.isComputationSort(node.getSort().getName())) {
-            isComputation = false;
-            return super.transform(node);
-        }
-        isComputation = true;
-        node = (Syntax) super.transform(node);
-        node.setSort(new Sort(KSorts.KLABEL));
-        return node;
-    }
-
-    @Override
-    public ASTNode transform(Production node) throws TransformerException {
-        if (node.containsAttribute("KLabelWrapper"))
-            return node;
-        if (!isComputation)
-            return super.transform(node);
-        if (node.isSubsort() && !node.containsAttribute("klabel"))
-            return null;
-        String arity = String.valueOf(node.getArity());
-        Attributes attrs = node.getAttributes().shallowCopy();
-        if (node.isListDecl()) {
-            listSeparators.add(((UserList) node.getItems().get(0)).getSeparator());
-            attrs.set("hybrid", "");
-        }
-        node = node.shallowCopy();
-        List<ProductionItem> pis = new ArrayList<ProductionItem>();
-        pis.add(new Terminal(node.getKLabel()));
-        node.setItems(pis);
-        attrs.set("arity", arity);
-        node.setAttributes(attrs);
-        node.setSort(KSorts.KLABEL);
-        return node;
-    }
-
-    @Override
-    public ASTNode transform(Sort node) throws TransformerException {
-        if (!MetaK.isComputationSort(node.getName()))
-            return node;
-        return new Sort("K");
+        return super.transform(node);
     }
 
     @Override
@@ -122,7 +54,7 @@ public class FlattenSyntax extends CopyOnWriteTransformer {
 
     /**
      * Flattens this TermCons if it has sort K, KItem, or any sort other than
-     * those defined in {@link KSort}.
+     * those defined in {@link org.kframework.kil.KSort}.
      */
     @Override
     public ASTNode transform(TermCons tc) throws TransformerException {
@@ -132,9 +64,9 @@ public class FlattenSyntax extends CopyOnWriteTransformer {
     }
 
     class FlattenKSyntax extends CopyOnWriteTransformer {
-        FlattenSyntax trans;
+        FlattenTerms trans;
 
-        public FlattenKSyntax(FlattenSyntax t, Context context) {
+        public FlattenKSyntax(FlattenTerms t, Context context) {
             super("Flatten K Syntax", context);
             trans = t;
         }
