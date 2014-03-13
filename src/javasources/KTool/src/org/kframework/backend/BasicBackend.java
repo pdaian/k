@@ -70,8 +70,8 @@ public abstract class BasicBackend implements Backend {
 
         steps.add(new DesugarStreams(context, false));
         steps.add(new ResolveFunctions(context));
-        steps.add(new AddKCell(context));
         steps.add(new AddStreamCells(context));
+        steps.add(new AddKCell(context));
         steps.add(new AddSymbolicK(context));
         steps.add(new AddSemanticEquality(context));
         // steps.add(new ResolveFresh());
